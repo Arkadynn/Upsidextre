@@ -14,6 +14,11 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.TooManyListenersException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+
 
 public class ServeurGants implements Runnable, SerialPortEventListener {
 
@@ -204,12 +209,24 @@ public class ServeurGants implements Runnable, SerialPortEventListener {
         {
             try
             {
-                
+
+            	/*
             	int i = input.read(buffer, 0, buffer.length);
-            	for (int j = 1; j < i-1; j++) {
-            		System.out.print((char)buffer[j]);
+            	char[] xmlReaded = new char[i];
+            	for (int j = 0; j < i; j++) {
+            		xmlReaded[j] = (char)buffer[j];
             	}
-            	System.out.println();
+            	
+            	System.out.println(String.valueOf(xmlReaded));
+            	
+            	//*/
+            	//*
+            	DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            	DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            	Document doc = dBuilder.parse(input);
+            	//*/
+            	
+            	
             }
             catch (Exception e)
             {
