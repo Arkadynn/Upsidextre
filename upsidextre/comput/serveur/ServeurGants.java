@@ -109,7 +109,7 @@ public class ServeurGants implements Runnable, SerialPortEventListener {
     //an exception is generated
     public void connect()
     {
-        String selectedPort = "COM3";
+        String selectedPort = (String) portMap.keySet().toArray()[0];
         selectedPortIdentifier = (CommPortIdentifier)portMap.get(selectedPort);
         
         CommPort commPort = null;
