@@ -20,8 +20,11 @@ public class SAXHandler extends DefaultHandler {
 	private Stack<Object> objectStack  = new Stack<Object>();
 
 	private UpsiDextre hardware;
-
-	Gant gant;
+	
+	private Gant gant;
+	
+	private int x;
+	private int y;
 
 	public SAXHandler(UpsiDextre hardware) {
 		this.hardware = hardware;
@@ -53,11 +56,54 @@ public class SAXHandler extends DefaultHandler {
 			throws SAXException {
 
 		String value = new String(ch, start, length).trim();
+		
+		int valueI = Integer.parseInt(value);
 
 		if (value.isEmpty()) return;
 		
 		switch (currentElement()) {
-		case "flexion": if (!objectStack.isEmpty()) hardware.feedFinger(Integer.parseInt(value));
+		case "flexion": 
+			switch (xEmeParent(1)) {
+			case "index":
+				gant.getIndexe().setFlexion(valueI);
+				break;
+			case "majeur":
+				gant.getMajeur().setFlexion(valueI);
+				break;
+			case "pouce":
+				gant.getPouce().setFlexion(valueI);
+				break;
+			}
+			if (!objectStack.isEmpty()) hardware.feedFinger(valueI);
+			break;
+		case "opposition":
+			gant.getPouce().setOpposition(valueI);
+			break;
+		case "x":
+			this.x = valueI;
+			break;
+		case "y":
+			this.y = valueI;
+			break;
+		case "z":
+			switch (xEmeParent(1)) {
+			case "accelerometre":
+				gant.getPosition().getAccelerometre().setX(x);
+				gant.getPosition().getAccelerometre().setY(y);
+				gant.getPosition().getAccelerometre().setZ(valueI);
+				break;
+			case "magnetometre":
+				gant.getPosition().getMagnetometre().setX(x);
+				gant.getPosition().getMagnetometre().setY(y);
+				gant.getPosition().getMagnetometre().setZ(valueI);
+				break;
+			case "gyrometre":
+				gant.getPosition().getGyroscope().setX(x);
+				gant.getPosition().getGyroscope().setY(y);
+				gant.getPosition().getGyroscope().setZ(valueI);
+				break;
+			}
+			break;
 		}
 	}
 
@@ -65,9 +111,9 @@ public class SAXHandler extends DefaultHandler {
 		return this.elementStack.peek();
 	}
 
-	private String currentElementParent() {
-		if(this.elementStack.size() < 2) return null;
-		return this.elementStack.get(this.elementStack.size()-2);
+	private String xEmeParent(int deg) {
+		if(this.elementStack.size() < deg+1) return null;
+		return this.elementStack.get(this.elementStack.size()-(deg+1));
 	}
 
 } 

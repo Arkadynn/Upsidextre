@@ -10,7 +10,7 @@ import upsidextre.comput.utilities.FastTrigo;
 
 public class FingerTest extends JFrame {
 	private int value=512;
-	private Canvas canvas = new Canvas(){
+	private Canvas canvas = new Canvas() {
 		@Override
 		public void paint(Graphics g) {
 			g.setColor(Color.BLACK);
@@ -25,6 +25,7 @@ public class FingerTest extends JFrame {
 			g.drawLine(x1, y1, x2, y2);
 		}
 	};
+	
 	public FingerTest() {
 		super("Test Doigt");
 		setSize(640,480);

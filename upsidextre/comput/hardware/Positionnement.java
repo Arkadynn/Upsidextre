@@ -6,9 +6,19 @@ public class Positionnement {
 	private Magnetometre magnetometre;
 	private Gyroscope gyroscope;
 	
+	private int[] tmp = new int[9];
+	
 	public Accelerometre getAccelerometre() {
 		return accelerometre;
 	}
+	
+	
+	public void computNextPosition() {
+		
+	}
+	
+	
+	
 	public void setAccelerometre(Accelerometre accelerometre) {
 		this.accelerometre = accelerometre;
 	}
@@ -23,5 +33,10 @@ public class Positionnement {
 	}
 	public void setGyroscope(Gyroscope gyroscope) {
 		this.gyroscope = gyroscope;
+	}
+	
+	public void setTmp(int i, int v) {
+		if (i >= tmp.length || i < 0) return;
+		tmp[i] = v;
 	}
 }

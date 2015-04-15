@@ -5,6 +5,8 @@ public class Gant {
 	private Majeur majeur;
 	private Pouce pouce;
 	
+	private Positionnement position;
+	
 	public Gant() {
 		this.setIndexe(new Indexe());
 		this.setMajeur(new Majeur());
@@ -33,5 +35,13 @@ public class Gant {
 
 	public void setPouce(Pouce pouce) {
 		this.pouce = pouce;
+	}
+
+	public Positionnement getPosition() {
+		return position;
+	}
+
+	public void setPosition(Positionnement position) {
+		this.position = position;
 	}
 }
