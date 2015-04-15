@@ -30,12 +30,8 @@ public class FingerTest extends JFrame {
 		int x2 = (int)(100*(Math.cos(((value/490F)*Math.PI))))+x1;
 		int y2 = (int)(100*(Math.sin(((value/490F)*Math.PI))))+y1;
 		
-<<<<<<< HEAD
 		g.drawLine(240, 240, x1, y1);
 		g.drawLine(x1, y1, x2, y2);
-=======
-		g.drawLine(240, 240, x, y);
->>>>>>> origin/master
 	}
 	
 	public void setvalue(int nvvalue) {
