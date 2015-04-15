@@ -25,12 +25,13 @@ public class FingerTest extends JFrame {
 		g.setColor(Color.BLACK);
 		g.drawLine(240, 240, 640, 240);
 		
-		int x = (int)(200*(Math.cos(((value/490F)*Math.PI))))+240;
-		int y = (int)(200*(Math.sin(((value/490F)*Math.PI))))+240;
+		int x1 = (int)(100*(Math.cos(((value/490F)*Math.PI/2F))))+240;
+		int y1 = (int)(100*(Math.sin(((value/490F)*Math.PI/2F))))+240;
+		int x2 = (int)(100*(Math.cos(((value/490F)*Math.PI))))+x1;
+		int y2 = (int)(100*(Math.sin(((value/490F)*Math.PI))))+y1;
 		
-		System.out.println("X : " + x + " | Y : " + y);
-		
-		g.drawLine(240, 240, x, y);
+		g.drawLine(240, 240, x1, y1);
+		g.drawLine(x1, y1, x2, y2);
 	}
 	
 	public void setvalue(int nvvalue) {
