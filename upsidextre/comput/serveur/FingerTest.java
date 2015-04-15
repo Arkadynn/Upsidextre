@@ -3,9 +3,7 @@ package upsidextre.comput.serveur;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import javax.jws.Oneway;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 public class FingerTest extends JFrame {
 	private int value=512;
