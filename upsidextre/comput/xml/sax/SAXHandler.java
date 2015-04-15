@@ -54,10 +54,10 @@ public class SAXHandler extends DefaultHandler {
 
 		String value = new String(ch, start, length).trim();
 
-
-
-		if (currentElement().equals("flexion") && !objectStack.isEmpty()) {
-			hardware.feedFinger(Integer.parseInt(value));
+		if (value.isEmpty()) return;
+		
+		switch (currentElement()) {
+		case "flexion": if (!objectStack.isEmpty()) hardware.feedFinger(Integer.parseInt(value));
 		}
 	}
 

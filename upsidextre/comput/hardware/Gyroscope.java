@@ -1,8 +1,10 @@
 package upsidextre.comput.hardware;
 
-public class Gyroscope {
+public class Gyroscope extends Hardware3D {
 
-	private int x;
-	private int y;
-	private int z;
+	@Override
+	public void computNext(int x, int y, int z) {
+		
+	}
+
 }

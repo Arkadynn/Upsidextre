@@ -1,8 +1,10 @@
 package upsidextre.comput.hardware;
 
-public class Accelerometre {
+public class Accelerometre extends Hardware3D {
 
-	private int x;
-	private int y;
-	private int z;
+	@Override
+	public void computNext(int x, int y, int z) {
+		
+	}
+
 }
