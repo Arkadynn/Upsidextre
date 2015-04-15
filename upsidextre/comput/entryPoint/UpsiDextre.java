@@ -18,7 +18,6 @@ public class UpsiDextre {
 	
 	public static void main(String[] args) {
 		new ServeurGants(new UpsiDextre()).run();
-
 	}
 
 	public Gant getMainDroite() {

@@ -1,9 +1,9 @@
 package upsidextre.comput.hardware;
 
 public class Gant {
-	private Doigt indexe;
-	private Doigt majeur;
-	private Doigt pouce;
+	private Indexe indexe;
+	private Majeur majeur;
+	private Pouce pouce;
 	
 	public Gant() {
 		this.setIndexe(new Indexe());
@@ -11,27 +11,27 @@ public class Gant {
 		this.setPouce(new Pouce());
 	}
 
-	public Doigt getIndexe() {
+	public Indexe getIndexe() {
 		return indexe;
 	}
 
-	public void setIndexe(Doigt indexe) {
+	public void setIndexe(Indexe indexe) {
 		this.indexe = indexe;
 	}
 
-	public Doigt getMajeur() {
+	public Majeur getMajeur() {
 		return majeur;
 	}
 
-	public void setMajeur(Doigt majeur) {
+	public void setMajeur(Majeur majeur) {
 		this.majeur = majeur;
 	}
 
-	public Doigt getPouce() {
+	public Pouce getPouce() {
 		return pouce;
 	}
 
-	public void setPouce(Doigt pouce) {
+	public void setPouce(Pouce pouce) {
 		this.pouce = pouce;
 	}
 }
