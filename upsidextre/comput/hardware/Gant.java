@@ -6,8 +6,32 @@ public class Gant {
 	private Doigt pouce;
 	
 	public Gant() {
-		this.indexe = new Indexe();
-		this.majeur = new Majeur();
-		this.pouce = new Pouce();
+		this.setIndexe(new Indexe());
+		this.setMajeur(new Majeur());
+		this.setPouce(new Pouce());
+	}
+
+	public Doigt getIndexe() {
+		return indexe;
+	}
+
+	public void setIndexe(Doigt indexe) {
+		this.indexe = indexe;
+	}
+
+	public Doigt getMajeur() {
+		return majeur;
+	}
+
+	public void setMajeur(Doigt majeur) {
+		this.majeur = majeur;
+	}
+
+	public Doigt getPouce() {
+		return pouce;
+	}
+
+	public void setPouce(Doigt pouce) {
+		this.pouce = pouce;
 	}
 }

@@ -21,16 +21,22 @@ public class FingerTest extends JFrame {
 	public void paint(Graphics g) {
 		// TODO Auto-generated method stub
 		super.paintComponents(g);
+		System.out.println("painted");
 		g.setColor(Color.BLACK);
 		g.drawLine(240, 240, 640, 240);
-		g.drawLine(240, 240, (int)(100*Math.cos((value/512)*Math.PI)), (int)(100*Math.sin(value/512)*Math.PI));
+		
+		int x = (int)(200*(Math.cos(((value/490F)*Math.PI))))+240;
+		int y = (int)(200*(Math.sin(((value/490F)*Math.PI))))+240;
+		
+		System.out.println("X : " + x + " | Y : " + y);
+		
+		g.drawLine(240, 240, x, y);
 	}
 	
 	public void setvalue(int nvvalue) {
 		value = nvvalue;
+		invalidate();
+		validate();
 		repaint();
-	}
-	public static void main(String Args[]) {
-		new FingerTest();
 	}
 }

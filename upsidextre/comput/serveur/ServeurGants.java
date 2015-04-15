@@ -7,6 +7,7 @@ import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -14,18 +15,22 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.TooManyListenersException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
-import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+import upsidextre.comput.entryPoint.UpsiDextre;
+import upsidextre.comput.xml.sax.SAXHandler;
 
 
 public class ServeurGants implements Runnable, SerialPortEventListener {
 
 	private byte[] buffer = new byte[1024];
 	
-    //for containing the ports that will be found
-    private Enumeration ports = null;
+	private Enumeration ports;
+	
     //map the port names to CommPortIdentifiers
     private HashMap<String, CommPortIdentifier> portMap = new HashMap();
 
@@ -53,12 +58,20 @@ public class ServeurGants implements Runnable, SerialPortEventListener {
     //a string for recording what goes on in the program
     //this string is written to the GUI
     String logText = "";
+
+	private UpsiDextre hardware;
 	
-	
+	public ServeurGants(UpsiDextre hardware) {
+		this.hardware = hardware;
+	}
+    
 	@Override
 	public void run() {
-		searchForPorts();
 		
+		
+
+		System.out.println("enter");
+		searchForPorts();
 		for (String id : portMap.keySet()) {
 			System.out.println(id);
 		}
@@ -209,7 +222,12 @@ public class ServeurGants implements Runnable, SerialPortEventListener {
         {
             try
             {
-
+            	//*
+            	SAXParserFactory factory = SAXParserFactory.newInstance();
+            	SAXParser parser = factory.newSAXParser();
+            	SAXHandler handler = new SAXHandler(hardware);
+            	parser.parse(input, handler);
+            	//*/
             	/*
             	int i = input.read(buffer, 0, buffer.length);
             	char[] xmlReaded = new char[i];
@@ -221,9 +239,7 @@ public class ServeurGants implements Runnable, SerialPortEventListener {
             	
             	//*/
             	//*
-            	DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            	DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            	Document doc = dBuilder.parse(input);
+            	
             	//*/
             	
             	
@@ -231,7 +247,7 @@ public class ServeurGants implements Runnable, SerialPortEventListener {
             catch (Exception e)
             {
                 logText = "Failed to read data. (" + e.toString() + ")";
-                System.err.println(logText);
+//System.err.println(logText);
             }
         }
         //*/
