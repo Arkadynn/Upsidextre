@@ -28,8 +28,6 @@ public class FingerTest extends JFrame {
 		int x = (int)(200*(Math.cos(((value/490F)*Math.PI))))+240;
 		int y = (int)(200*(Math.sin(((value/490F)*Math.PI))))+240;
 		
-		System.out.println("X : " + x + " | Y : " + y);
-		
 		g.drawLine(240, 240, x, y);
 	}
 	
