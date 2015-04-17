@@ -34,10 +34,12 @@ public class SAXHandler extends DefaultHandler {
 			String qName, Attributes attributes) throws SAXException {
 
 		this.elementStack.push(qName);
-
-		if (qName.equals("doigt")) {
-			if (attributes.getValue("id").equals("index")) {
-				this.objectStack.push(qName);
+		
+		if (qName.equals("gant")) {
+			if (attributes.getValue("lat").equals("gauche")) {
+				gant = hardware.getMainGauche();
+			} else {
+				gant = hardware.getMainDroite();
 			}
 		}
 	}
@@ -46,9 +48,9 @@ public class SAXHandler extends DefaultHandler {
 			String qName) throws SAXException {
 
 		this.elementStack.pop();
-
-		if (qName.equals("doigt")) {
-			this.objectStack.clear();
+		
+		if (qName.equals("gant")) {
+			gant = null;
 		}
 	}
 
