@@ -1,7 +1,7 @@
 package upsidextre.comput.entryPoint;
 
 import upsidextre.comput.hardware.Gant;
-import upsidextre.comput.serveur.FingerTest;
+import upsidextre.comput.serveur.FingerTestLight;
 import upsidextre.comput.serveur.ServeurGants;
 
 
@@ -10,10 +10,10 @@ public class UpsiDextre {
 	private Gant mainDroite;
 	private Gant mainGauche;
 	
-	private FingerTest fingerTest;
+	private FingerTestLight fingerTest;
 	
 	public UpsiDextre() {
-		fingerTest = new FingerTest();
+		fingerTest = new FingerTestLight();
 	}
 	
 	public static void main(String[] args) {

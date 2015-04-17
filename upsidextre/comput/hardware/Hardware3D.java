@@ -17,7 +17,7 @@ public abstract class Hardware3D {
 	}
 	
 	public int getX () {
-		return this.x;
+		return this.oldX;
 	}
 	
 	public void setY (int y) {
@@ -25,7 +25,7 @@ public abstract class Hardware3D {
 	}
 	
 	public int getY () {
-		return this.y;
+		return this.oldY;
 	}
 	
 	public void setZ (int z) {
@@ -33,6 +33,6 @@ public abstract class Hardware3D {
 	}
 	
 	public int getZ () {
-		return this.z;
+		return this.oldZ;
 	}
 }

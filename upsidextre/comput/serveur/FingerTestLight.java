@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 
 import upsidextre.comput.utilities.FastTrigo;
 
-public class FingerTest extends JFrame {
+public class FingerTestLight extends JFrame {
 	private int value=512;
 	private Canvas canvas = new Canvas() {
 		@Override
@@ -26,7 +26,7 @@ public class FingerTest extends JFrame {
 		}
 	};
 	
-	public FingerTest() {
+	public FingerTestLight() {
 		super("Test Doigt");
 		setSize(640,480);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
