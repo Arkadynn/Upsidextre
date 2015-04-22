@@ -22,6 +22,7 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.SAXException;
 
 import upsidextre.comput.entryPoint.UpsiDextre;
+import upsidextre.comput.utilities.RotationSliderTest;
 import upsidextre.comput.xml.sax.SAXHandler;
 
 
@@ -29,7 +30,7 @@ public class ServeurGants implements Runnable, SerialPortEventListener {
 
 	private byte[] buffer = new byte[1024];
 	
-	private Enumeration ports;
+	private Enumeration<Object> ports;
 	
     //map the port names to CommPortIdentifiers
     private HashMap<String, CommPortIdentifier> portMap = new HashMap();
@@ -71,6 +72,9 @@ public class ServeurGants implements Runnable, SerialPortEventListener {
 		
 
 		System.out.println("enter");
+		
+		
+		/*
 		searchForPorts();
 		for (String id : portMap.keySet()) {
 			System.out.println(id);
@@ -80,6 +84,17 @@ public class ServeurGants implements Runnable, SerialPortEventListener {
 		initIOStream();
 		initListener();
 		disconnect();
+		//*/
+		/*
+		try {
+			SAXParserFactory factory = SAXParserFactory.newInstance();
+	    	SAXParser parser = factory.newSAXParser();
+	    	SAXHandler handler = new SAXHandler(hardware);
+	    	parser.parse(new File("data_annexes/xmlparseTest.xml"), handler);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		//*/
 	}
 
 	

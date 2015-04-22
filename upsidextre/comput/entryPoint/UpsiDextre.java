@@ -3,6 +3,7 @@ package upsidextre.comput.entryPoint;
 import upsidextre.comput.hardware.Gant;
 import upsidextre.comput.serveur.FingerTestLight;
 import upsidextre.comput.serveur.ServeurGants;
+import upsidextre.comput.utilities.RotationSliderTest;
 
 
 public class UpsiDextre {

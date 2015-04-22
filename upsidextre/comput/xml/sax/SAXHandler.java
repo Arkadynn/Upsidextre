@@ -17,7 +17,6 @@ public class SAXHandler extends DefaultHandler {
 
 
 	private Stack<String> elementStack = new Stack<String>();
-	private Stack<Object> objectStack  = new Stack<Object>();
 
 	private UpsiDextre hardware;
 	
@@ -36,6 +35,7 @@ public class SAXHandler extends DefaultHandler {
 		this.elementStack.push(qName);
 		
 		if (qName.equals("gant")) {
+			System.out.println("gants");
 			if (attributes.getValue("lat").equals("gauche")) {
 				gant = hardware.getMainGauche();
 			} else {
@@ -58,7 +58,7 @@ public class SAXHandler extends DefaultHandler {
 			throws SAXException {
 
 		String value = new String(ch, start, length).trim();
-		
+		if (value.isEmpty()) return;
 		int valueI = Integer.parseInt(value);
 
 		if (value.isEmpty()) return;
@@ -67,39 +67,49 @@ public class SAXHandler extends DefaultHandler {
 		case "flexion": 
 			switch (xEmeParent(1)) {
 			case "index":
+				System.out.println("index");
 				gant.getIndexe().setFlexion(valueI);
+				hardware.feedFinger(valueI);
 				break;
 			case "majeur":
+				System.out.println("majeur");
 				gant.getMajeur().setFlexion(valueI);
 				break;
 			case "pouce":
+				System.out.println("pouce");
 				gant.getPouce().setFlexion(valueI);
 				break;
 			}
-			if (!objectStack.isEmpty()) hardware.feedFinger(valueI);
 			break;
 		case "opposition":
+			System.out.println("opposition");
 			gant.getPouce().setOpposition(valueI);
 			break;
 		case "x":
+			System.out.println("x");
 			this.x = valueI;
 			break;
 		case "y":
+			System.out.println("y");
 			this.y = valueI;
 			break;
 		case "z":
+			System.out.println("z");
 			switch (xEmeParent(1)) {
 			case "accelerometre":
+				System.out.println("accelerometre");
 				gant.getPosition().getAccelerometre().setX(x);
 				gant.getPosition().getAccelerometre().setY(y);
 				gant.getPosition().getAccelerometre().setZ(valueI);
 				break;
 			case "magnetometre":
+				System.out.println("magnetometre");
 				gant.getPosition().getMagnetometre().setX(x);
 				gant.getPosition().getMagnetometre().setY(y);
 				gant.getPosition().getMagnetometre().setZ(valueI);
 				break;
 			case "gyrometre":
+				System.out.println("gyrometre");
 				gant.getPosition().getGyroscope().setX(x);
 				gant.getPosition().getGyroscope().setY(y);
 				gant.getPosition().getGyroscope().setZ(valueI);
