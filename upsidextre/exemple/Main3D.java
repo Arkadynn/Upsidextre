@@ -104,7 +104,7 @@ public class Main3D implements ApplicationListener {
 	public void render() {
 		// TODO Auto-generated method stub
 		camController.update();
-		instance.getNode("Left_Forearm_Joint_01").rotation.setEulerAngles(instance.getNode("Left_Forearm_Joint_01").rotation.getYaw()+1, 0, 0);
+		
 		instance.calculateTransforms();
 		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
