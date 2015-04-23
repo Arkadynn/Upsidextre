@@ -5,6 +5,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.logging.FileHandler;
 
+import upsidextre.comput.utilities.NodeAd;
+import upsidextre.comput.utilities.PhysicsObject;
+import upsidextre.comput.utilities.RotationSliderTest;
+
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Gdx;
@@ -25,6 +29,7 @@ import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalShadowLight;
 import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
+import com.badlogic.gdx.graphics.g3d.model.Node;
 import com.badlogic.gdx.graphics.g3d.shaders.DefaultShader;
 import com.badlogic.gdx.graphics.g3d.shaders.DefaultShader.Config;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
@@ -45,11 +50,18 @@ public class Main3D implements ApplicationListener {
 	public ModelInstance instance;
 	public ArrayList<ModelInstance> instances= new ArrayList();
 	public CameraInputController camController;
+	public RotationSliderTest control;
+	public NodeAd 	d1;
+	public NodeAd	d2;
+	public NodeAd	g1;
+	public NodeAd	g2;
+	private PhysicsObject mug;
+	
 	
 	@Override
 	public void create() {
 		// TODO Auto-generated method stub
-		
+		control = new RotationSliderTest();
         modelBatch = new ModelBatch();
 		environment = new Environment();
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, .4f, .4f, .4f, 1f));
@@ -83,8 +95,15 @@ public class Main3D implements ApplicationListener {
         chair.transform.translate(0f, -0.75f, 0.1f);
         instances.add(chair);
         instances.add(ground);
+        mug = new PhysicsObject(new ModelInstance(modelLoader.loadModel(Gdx.files.getFileHandle("data/mug.g3db", FileType.Internal))),
+        -0.3f,-1.05f,0.6f,-1.81f);
+        instances.add(mug.getobject());
         camController = new CameraInputController(cam);
         Gdx.input.setInputProcessor(camController);
+        d1 = new NodeAd(instance,"Right_Upper_Arm_Joint_01");
+        d2 = new NodeAd(instance,"Right_Forearm_Joint_01");
+        g1 = new NodeAd(instance,"Left_Upper_Arm_Joint_01");
+        g2 = new NodeAd(instance,"Left_Forearm_Joint_01");
 	}
 
 	@Override
@@ -104,7 +123,11 @@ public class Main3D implements ApplicationListener {
 	public void render() {
 		// TODO Auto-generated method stub
 		camController.update();
-		
+		mug.deltaphy();
+		d1.setrotation(control.getABDR1(), control.getABDR2(), 0);
+		d2.setrotation(control.getBDR1(), control.getBDR2(), 0);
+		g1.setrotation(control.getABGR1(), control.getABGR2(), 0);
+		g2.setrotation(control.getBGR1(), control.getBGR2(), 0);
 		instance.calculateTransforms();
 		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
