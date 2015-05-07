@@ -11,6 +11,7 @@ public class Gant {
 		this.setIndexe(new Indexe());
 		this.setMajeur(new Majeur());
 		this.setPouce(new Pouce());
+		this.setPosition(new Positionnement());
 	}
 
 	public Indexe getIndexe() {

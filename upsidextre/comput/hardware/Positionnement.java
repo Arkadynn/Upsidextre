@@ -8,13 +8,21 @@ public class Positionnement {
 	
 	private int[] tmp = new int[9];
 	
+	public Positionnement() {
+		setAccelerometre(new Accelerometre());
+		setMagnetometre(new Magnetometre());
+		setGyroscope(new Gyroscope());
+	}
+	
 	public Accelerometre getAccelerometre() {
 		return accelerometre;
 	}
 	
 	
 	public void computNextPosition() {
-		
+		accelerometre.computNext();
+		magnetometre.computNext();
+		gyroscope.computNext();
 	}
 	
 	

@@ -10,7 +10,11 @@ public abstract class Hardware3D {
 	private int oldY;
 	private int oldZ;
 	
-	public abstract void computNext();
+	public void computNext() {
+		oldX = x;
+		oldY = y;
+		oldZ = z;
+	}
 	
 	public void setX (int x) {
 		this.x = x;
