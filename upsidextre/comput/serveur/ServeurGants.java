@@ -8,12 +8,12 @@ import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.TooManyListenersException;
 
 import javax.swing.JOptionPane;
 import javax.xml.parsers.SAXParser;
@@ -24,7 +24,7 @@ import upsidextre.comput.xml.sax.SAXHandler;
 
 public class ServeurGants implements SerialPortEventListener {
 
-	private byte[] buffer = new byte[1024];
+	private byte[] buffer = new byte[65535];
 
 	private Enumeration<Object> ports;
 
@@ -93,6 +93,10 @@ public class ServeurGants implements SerialPortEventListener {
 		// */
 		// *
 		try {
+			
+			
+			
+			
 			SAXParserFactory factory = SAXParserFactory.newInstance();
 			SAXParser parser = factory.newSAXParser();
 			SAXHandler handler = new SAXHandler(hardware);
@@ -135,10 +139,11 @@ public class ServeurGants implements SerialPortEventListener {
 
 		try {
 			// the method below returns an object of type CommPort
-			commPort = selectedPortIdentifier
-					.open("TigerControlPanel", TIMEOUT);
+			commPort = selectedPortIdentifier.open(this.getClass().getName(), TIMEOUT);
+			
 			// the CommPort object can be casted to a SerialPort object
 			serialPort = (SerialPort) commPort;
+			serialPort.setSerialPortParams(115200, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
 			// for controlling GUI elements
 			bConnected = true;
 
@@ -166,6 +171,8 @@ public class ServeurGants implements SerialPortEventListener {
 		try {
 			//
 			input = serialPort.getInputStream();
+			
+			
 			output = serialPort.getOutputStream();
 
 			successful = true;
@@ -222,6 +229,8 @@ public class ServeurGants implements SerialPortEventListener {
 		// *
 		if (evt.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
 			try {
+
+input = new FileInputStream(new File("data_annexes/test.xml"));
 				//*
 				SAXParserFactory factory = SAXParserFactory.newInstance();
 				SAXParser parser = factory.newSAXParser();
@@ -234,12 +243,12 @@ public class ServeurGants implements SerialPortEventListener {
 				 xmlReaded[j] = (char)buffer[j]; }
 				 
 				 System.out.println(String.valueOf(xmlReaded));
-				 
-				 //*/
 
+				 //*/
+				input.close();
 			} catch (Exception e) {
 				logText = "Failed to read data. (" + e.toString() + ")";
-				System.err.println(logText);
+				e.printStackTrace();
 			}
 		}
 		// */
