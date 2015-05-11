@@ -63,11 +63,8 @@ public class SAXHandler extends DefaultHandler {
 		if (value.isEmpty()) return;
 
 		switch (currentElement()) {
-		case "flexion": 
-			parent = xEmeParent(1);
-			if (parent == null)
-				return;
-			switch (parent) {
+		case "flexion":
+			switch (xEmeParent(1)) {
 			case "index":
 				gant.getIndexe().setFlexion(valueI);
 				hardware.feedFinger(valueI);
@@ -90,11 +87,7 @@ public class SAXHandler extends DefaultHandler {
 			this.y = valueI;
 			break;
 		case "z":
-			parent = xEmeParent(1);
-			
-			if (parent == null)
-				return;
-			switch (parent) {
+			switch (xEmeParent(1)) {
 			case "accelerometre":
 				System.out.println("accelerometre");
 				gant.getPosition().getAccelerometre().setX(x);

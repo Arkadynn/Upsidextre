@@ -239,7 +239,7 @@ public class ServeurGants implements SerialPortEventListener {
 
 			} catch (Exception e) {
 				logText = "Failed to read data. (" + e.toString() + ")";
-				// System.err.println(logText);
+				System.err.println(logText);
 			}
 		}
 		// */
