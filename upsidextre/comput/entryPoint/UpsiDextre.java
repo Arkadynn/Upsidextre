@@ -1,7 +1,6 @@
 package upsidextre.comput.entryPoint;
 
 import upsidextre.comput.hardware.Gant;
-import upsidextre.comput.serveur.FingerTestLight;
 import upsidextre.comput.serveur.ServeurGants;
 import upsidextre.comput.utilities.HardwareViewer;
 
@@ -13,13 +12,10 @@ public class UpsiDextre {
 	
 	
 	private HardwareViewer hardwareViewer;
-	private FingerTestLight fingerTest;
 	
 	public UpsiDextre() {
 		setMainDroite(new Gant());
 		setMainGauche(new Gant());
-		
-		fingerTest = new FingerTestLight();
 		hardwareViewer = new HardwareViewer();
 	}
 	
@@ -44,7 +40,6 @@ public class UpsiDextre {
 	}
 
 	public void feedFinger (int feed) {
-		this.fingerTest.setvalue(feed);
 	}
 	
 	public HardwareViewer getHardwareViewer () {

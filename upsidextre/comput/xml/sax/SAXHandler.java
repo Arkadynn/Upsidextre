@@ -54,9 +54,9 @@ public class SAXHandler extends DefaultHandler {
 		}
 	}
 
-	public void characters(char ch[], int start, int length)
-			throws SAXException {
+	public void characters(char ch[], int start, int length) throws SAXException {
 		String value = new String(ch, start, length).trim();
+		String parent;
 		if (value.isEmpty()) return;
 		int valueI = Integer.parseInt(value);
 
@@ -64,7 +64,10 @@ public class SAXHandler extends DefaultHandler {
 
 		switch (currentElement()) {
 		case "flexion": 
-			switch (xEmeParent(1)) {
+			parent = xEmeParent(1);
+			if (parent == null)
+				return;
+			switch (parent) {
 			case "index":
 				gant.getIndexe().setFlexion(valueI);
 				hardware.feedFinger(valueI);
@@ -87,7 +90,11 @@ public class SAXHandler extends DefaultHandler {
 			this.y = valueI;
 			break;
 		case "z":
-			switch (xEmeParent(1)) {
+			parent = xEmeParent(1);
+			
+			if (parent == null)
+				return;
+			switch (parent) {
 			case "accelerometre":
 				System.out.println("accelerometre");
 				gant.getPosition().getAccelerometre().setX(x);
