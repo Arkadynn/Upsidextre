@@ -45,6 +45,8 @@ public class SAXHandler extends DefaultHandler {
 	public void endElement(String uri, String localName,
 			String qName) throws SAXException {
 
+		elementStack.pop();
+		
 		if (qName.equals("gant")) {
 			gant = null;
 		}
@@ -56,7 +58,6 @@ public class SAXHandler extends DefaultHandler {
 
 	public void characters(char ch[], int start, int length) throws SAXException {
 		String value = new String(ch, start, length).trim();
-		String parent;
 		if (value.isEmpty()) return;
 		int valueI = Integer.parseInt(value);
 
@@ -95,11 +96,13 @@ public class SAXHandler extends DefaultHandler {
 				gant.getPosition().getAccelerometre().setZ(valueI);
 				break;
 			case "magnetometre":
+				System.out.println("magnetometre");
 				gant.getPosition().getMagnetometre().setX(x);
 				gant.getPosition().getMagnetometre().setY(y);
 				gant.getPosition().getMagnetometre().setZ(valueI);
 				break;
-			case "gyrometre":
+			case "gyroscope":
+				System.out.println("gyroscope");
 				gant.getPosition().getGyroscope().setX(x);
 				gant.getPosition().getGyroscope().setY(y);
 				gant.getPosition().getGyroscope().setZ(valueI);

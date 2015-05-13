@@ -6,14 +6,7 @@ public abstract class Hardware3D {
 	private int y;
 	private int z;
 	
-	private int oldX;
-	private int oldY;
-	private int oldZ;
-	
 	public void computNext() {
-		oldX = x;
-		oldY = y;
-		oldZ = z;
 	}
 	
 	public void setX (int x) {
@@ -21,7 +14,7 @@ public abstract class Hardware3D {
 	}
 	
 	public int getX () {
-		return this.oldX;
+		return this.x;
 	}
 	
 	public void setY (int y) {
@@ -29,7 +22,7 @@ public abstract class Hardware3D {
 	}
 	
 	public int getY () {
-		return this.oldY;
+		return this.y;
 	}
 	
 	public void setZ (int z) {
@@ -37,6 +30,6 @@ public abstract class Hardware3D {
 	}
 	
 	public int getZ () {
-		return this.oldZ;
+		return this.z;
 	}
 }

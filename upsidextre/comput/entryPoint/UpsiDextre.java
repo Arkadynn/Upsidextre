@@ -47,10 +47,6 @@ public class UpsiDextre {
 	}
 
 	public void refreshViewer() {
-		
-		getMainDroite().getPosition().computNextPosition();
-		getMainGauche().getPosition().computNextPosition();
-		
 		StringBuffer sb = new StringBuffer();
 
 		sb.append("Majeur : \n");

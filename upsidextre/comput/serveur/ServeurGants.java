@@ -7,11 +7,10 @@ import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.StringReader;
 import java.util.Enumeration;
 import java.util.HashMap;
 
@@ -19,12 +18,19 @@ import javax.swing.JOptionPane;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.xml.sax.InputSource;
+
 import upsidextre.comput.entryPoint.UpsiDextre;
 import upsidextre.comput.xml.sax.SAXHandler;
 
 public class ServeurGants implements SerialPortEventListener {
 
 	private byte[] buffer = new byte[65535];
+
+	private StringBuffer sb = new StringBuffer ();
+
+	private boolean firstReading = true;
+
 
 	private Enumeration<Object> ports;
 
@@ -68,11 +74,11 @@ public class ServeurGants implements SerialPortEventListener {
 
 		// *
 		searchForPorts();
-		
+
 		if (portMap.keySet().isEmpty()) {
 			System.out.println("please connect a device");
 		}
-		
+
 		Object reponse;
 		// Affiche les ports disponibles pour connexion
 		do {
@@ -85,25 +91,14 @@ public class ServeurGants implements SerialPortEventListener {
 					portMap.keySet().toArray()[0]); // Choix par
 			// défaut
 		} while (reponse == null);
-		
+
 		System.out.println(reponse);
 		connect((String)reponse);
 		initIOStream();
 		initListener();
-		// */
-		// *
-		try {
-			
-			
-			
-			
-			SAXParserFactory factory = SAXParserFactory.newInstance();
-			SAXParser parser = factory.newSAXParser();
-			SAXHandler handler = new SAXHandler(hardware);
-			parser.parse(input, handler);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+
+		write();
+
 		// */
 		if (!bConnected)
 			disconnect();
@@ -140,7 +135,7 @@ public class ServeurGants implements SerialPortEventListener {
 		try {
 			// the method below returns an object of type CommPort
 			commPort = selectedPortIdentifier.open(this.getClass().getName(), TIMEOUT);
-			
+
 			// the CommPort object can be casted to a SerialPort object
 			serialPort = (SerialPort) commPort;
 			serialPort.setSerialPortParams(115200, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
@@ -171,8 +166,7 @@ public class ServeurGants implements SerialPortEventListener {
 		try {
 			//
 			input = serialPort.getInputStream();
-			
-			
+
 			output = serialPort.getOutputStream();
 
 			successful = true;
@@ -221,36 +215,53 @@ public class ServeurGants implements SerialPortEventListener {
 		}
 	}
 
+	public void write () {
+		try {
+			output.write(0);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	// what happens when data is received
-	// pre style="font-size: 11px;": serial event is triggered
+	// pre : serial event is triggered
 	// post: processing on the data it reads
 	@Override
 	public void serialEvent(SerialPortEvent evt) {
-		// *
 		if (evt.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
 			try {
+				int i = input.read(buffer, 0, buffer.length); 
 
-input = new FileInputStream(new File("data_annexes/test.xml"));
-				//*
-				SAXParserFactory factory = SAXParserFactory.newInstance();
-				SAXParser parser = factory.newSAXParser();
-				SAXHandler handler = new SAXHandler(hardware);
-				parser.parse(input, handler);
-				// */
-				/*
-				 int i = input.read(buffer, 0, buffer.length); char[]
-				 xmlReaded = new char[i]; for (int j = 0; j < i; j++) {
-				 xmlReaded[j] = (char)buffer[j]; }
-				 
-				 System.out.println(String.valueOf(xmlReaded));
+				for (int j = 0; j < i; j++) {
+					if (buffer[j] == 23) {
+						if (!firstReading) {
+							parse (new InputSource (new StringReader (sb.toString())));
+						} else {
+							firstReading = false;
+						}
+						sb = new StringBuffer();
+					} else {
+						sb.append((char)buffer[j]);
+					}
+				}
 
-				 //*/
-				input.close();
 			} catch (Exception e) {
-				logText = "Failed to read data. (" + e.toString() + ")";
 				e.printStackTrace();
 			}
 		}
-		// */
+	}
+
+	public void parse (InputSource input) {
+		try {
+			
+			SAXParserFactory factory = SAXParserFactory.newInstance();
+			SAXParser parser = factory.newSAXParser();
+			SAXHandler handler = new SAXHandler(hardware);
+			parser.parse(input, handler);
+
+		} catch (Exception e) {
+			logText = "Failed to read data. (" + e.toString() + ")";
+			e.printStackTrace();
+		}
 	}
 }

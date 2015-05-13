@@ -6,5 +6,4 @@ public class Magnetometre extends Hardware3D {
 	public void computNext() {
 		super.computNext();
 	}
-
 }
