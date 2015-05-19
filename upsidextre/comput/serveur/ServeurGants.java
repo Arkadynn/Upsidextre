@@ -20,6 +20,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.xml.sax.InputSource;
 
+import socketServer.Server;
 import upsidextre.comput.entryPoint.UpsiDextre;
 import upsidextre.comput.xml.sax.SAXHandler;
 
@@ -66,6 +67,7 @@ public class ServeurGants implements SerialPortEventListener {
 
 	public ServeurGants(UpsiDextre hardware) {
 		this.hardware = hardware;
+		new Server (hardware);
 	}
 
 	public void run() {
