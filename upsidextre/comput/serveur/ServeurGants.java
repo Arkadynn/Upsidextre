@@ -83,13 +83,13 @@ public class ServeurGants implements SerialPortEventListener {
 		// Affiche les ports disponibles pour connexion
 		do {
 			reponse = JOptionPane.showInputDialog(null, // composant parent
-					"Choix du port série :", // message
+					"Choix du port sï¿½rie :", // message
 					"Port Select", // titre
 					JOptionPane.DEFAULT_OPTION, // type de dialogue
 					null, // icone
 					portMap.keySet().toArray(), // Liste de choix
 					portMap.keySet().toArray()[0]); // Choix par
-			// défaut
+			// dï¿½faut
 		} while (reponse == null);
 
 		System.out.println(reponse);

@@ -90,19 +90,19 @@ public class SAXHandler extends DefaultHandler {
 		case "z":
 			switch (xEmeParent(1)) {
 			case "accelerometre":
-				System.out.println("accelerometre");
+				//System.out.println("accelerometre");
 				gant.getPosition().getAccelerometre().setX(x);
 				gant.getPosition().getAccelerometre().setY(y);
 				gant.getPosition().getAccelerometre().setZ(valueI);
 				break;
 			case "magnetometre":
-				System.out.println("magnetometre");
+				//System.out.println("magnetometre");
 				gant.getPosition().getMagnetometre().setX(x);
 				gant.getPosition().getMagnetometre().setY(y);
 				gant.getPosition().getMagnetometre().setZ(valueI);
 				break;
 			case "gyroscope":
-				System.out.println("gyroscope");
+				//System.out.println("gyroscope");
 				gant.getPosition().getGyroscope().setX(x);
 				gant.getPosition().getGyroscope().setY(y);
 				gant.getPosition().getGyroscope().setZ(valueI);
