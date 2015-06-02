@@ -10,6 +10,7 @@ import upsidextre.comput.entryPoint.UpsiDextre;
 
 public class ClientHandler extends Thread {
 	
+	@SuppressWarnings("unused")
 	private Socket socket;
 	private boolean connected = true;
 	
@@ -41,7 +42,7 @@ public class ClientHandler extends Thread {
 		String outputLine;
 		
 		try {
-			while (connected && ((inputLine = in.readLine()) != null)) {
+			while (((inputLine = in.readLine()) != null) || connected) {
 				outputLine = commProtocol.repondre(inputLine);
 			    out.println(outputLine);
 			    if (inputLine.equals("close"))

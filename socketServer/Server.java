@@ -27,15 +27,16 @@ public class Server {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 	}
 	
 	public void connect () {
 		while (true) {
 			try {
-				
+				System.out.println("Waiting for a client");
 				tmpClientSocket = serverSocket.accept();
 				clients.add(tmpClientSocket);
-				
+				System.out.println("Client found : " + tmpClientSocket.getPort());
 				new ClientHandler(tmpClientSocket, hardware).start();
 			} catch (Exception e) {
 				e.printStackTrace();

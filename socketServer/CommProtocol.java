@@ -29,12 +29,23 @@ public class CommProtocol {
 	 * @return : Le reponse du serveur
 	 */
 	public String repondre (String question) {
-		String reponse = new String("<?xml version=\"1.0\" ?>");
-		
-		String[] q2 = question.split("\\.");
+		String base = new String("<?xml version=\"1.0\" ?>");
+		String reponse = "";
+		String[] q2;
+		System.out.println(question);
+		System.out.println(question.contains("."));
+		if (question.contains(".")) {
+			q2 = question.split("\\.");
+		} else {
+			q2 = new String[1];
+			q2[0] = question;
+		}
 		
 		for (int i = 0; i < q2.length; i++) {
 			switch (q2[i]) {
+			case "upsiDextre":
+				reponse += respond("upsiDextre");
+				break;
 			case "mainGauche":
 				main = hardware.getMainGauche();
 				if (i == q2.length-1) {
@@ -86,9 +97,10 @@ public class CommProtocol {
 				break;
 			case "h3D":
 				if (i != q2.length -1) {
-					return reponse + "<error>Erreur dans votre demande. Requete non prise en charge</error>";
+					return base + "<error>Erreur dans votre demande. Requete non prise en charge</error>";
 				}
 				reponse += respond("h3DAll");
+				break;
 			case "x":
 				reponse += "<x>" + h3D.getX() + "</x>";
 				break;
@@ -105,13 +117,13 @@ public class CommProtocol {
 				reponse += "opposition>" + pouce.getOpposition() + "</opposition>";
 				break;
 			default:
-				reponse += "<error>Erreur dans votre demande. Requete non prise en charge</error>";
+				return base += "<error>Erreur dans votre demande. Requete non prise en charge</error>";
 			}
 		}
 		
 		clear();
 		
-		return reponse;
+		return base + reponse;
 	}
 	
 	/**

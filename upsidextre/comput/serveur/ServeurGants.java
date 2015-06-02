@@ -68,7 +68,14 @@ public class ServeurGants implements SerialPortEventListener {
 
 	public ServeurGants(UpsiDextre hardware) {
 		this.hardware = hardware;
-		new Server (hardware);
+		
+		new Thread () {
+			@Override
+			public void run() {
+				super.run();
+				new Server (hardware).connect();
+			}
+		}.start();
 		
 		start();
 	}
@@ -219,7 +226,6 @@ public class ServeurGants implements SerialPortEventListener {
 	 */
 	@Override
 	public void serialEvent(SerialPortEvent evt) {
-		long t1 = System.currentTimeMillis();
 		if (evt.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
 			try {
 				int i = input.read(buffer, 0, buffer.length); 
@@ -243,7 +249,6 @@ public class ServeurGants implements SerialPortEventListener {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			System.out.println(System.currentTimeMillis() - t1 + "ms");
 		}
 	}
 
