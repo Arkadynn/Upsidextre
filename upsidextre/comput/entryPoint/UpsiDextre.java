@@ -20,7 +20,7 @@ public class UpsiDextre {
 	}
 	
 	public static void main(String[] args) {
-		new ServeurGants(new UpsiDextre()).run();;
+		new ServeurGants(new UpsiDextre()); // Not a Thread, but Listener on Serial Port
 	}
 
 	public Gant getMainDroite() {

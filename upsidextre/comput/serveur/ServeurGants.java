@@ -25,6 +25,8 @@ import upsidextre.comput.entryPoint.UpsiDextre;
 import upsidextre.comput.xml.sax.SAXHandler;
 
 public class ServeurGants implements SerialPortEventListener {
+	
+	private static final int ETB = 23;
 
 	private byte[] buffer = new byte[65535];
 
@@ -32,11 +34,10 @@ public class ServeurGants implements SerialPortEventListener {
 
 	private boolean firstReading = true;
 
-
 	private Enumeration<Object> ports;
 
 	// map the port names to CommPortIdentifiers
-	private HashMap<String, CommPortIdentifier> portMap = new HashMap();
+	private HashMap<String, CommPortIdentifier> portMap = new HashMap<String, CommPortIdentifier>();
 
 	// this is the object that contains the opened port
 	private CommPortIdentifier selectedPortIdentifier = null;
@@ -68,53 +69,47 @@ public class ServeurGants implements SerialPortEventListener {
 	public ServeurGants(UpsiDextre hardware) {
 		this.hardware = hardware;
 		new Server (hardware);
+		
+		start();
 	}
 
-	public void run() {
+	/**
+	 * Initialize the serial port to be read
+	 */
+	public void start() {
 
-		System.out.println("enter");
-
-		// *
 		searchForPorts();
 
-		if (portMap.keySet().isEmpty()) {
-			System.out.println("please connect a device");
-		}
-
-		Object reponse;
+		Object reponse = null;
 		// Affiche les ports disponibles pour connexion
 		do {
-			reponse = JOptionPane.showInputDialog(null, // composant parent
-					"Choix du port série :", // message
-					"Port Select", // titre
-					JOptionPane.DEFAULT_OPTION, // type de dialogue
-					null, // icone
-					portMap.keySet().toArray(), // Liste de choix
-					portMap.keySet().toArray()[0]); // Choix par
-			// défaut
-		} while (reponse == null);
+			if (portMap.keySet().isEmpty()) {
+				System.out.println("please connect a device");
+			} else {
+				reponse = JOptionPane.showInputDialog(null, // composant parent
+						"Choix du port série :", // message
+						"Port Select", // titre
+						JOptionPane.DEFAULT_OPTION, // type de dialogue
+						null, // icone
+						portMap.keySet().toArray(), // Liste de choix
+						portMap.keySet().toArray()[0]); // Choix par défaut
+			}
+		} while (reponse == null); // To make sure user select a port
 
-		System.out.println(reponse);
 		connect((String)reponse);
 		initIOStream();
 		initListener();
 
 		write();
-
-		// */
-		if (!bConnected)
-			disconnect();
 	}
 
 	// search for all the serial ports
-	// pre style="font-size: 11px;": none
 	// post: adds all the found ports to a combo box on the GUI
 	public void searchForPorts() {
 		ports = CommPortIdentifier.getPortIdentifiers();
 
 		while (ports.hasMoreElements()) {
-			CommPortIdentifier curPort = (CommPortIdentifier) ports
-					.nextElement();
+			CommPortIdentifier curPort = (CommPortIdentifier) ports.nextElement();
 
 			// get only serial ports
 			if (curPort.getPortType() == CommPortIdentifier.PORT_SERIAL) {
@@ -124,11 +119,7 @@ public class ServeurGants implements SerialPortEventListener {
 	}
 
 	// connect to the selected port in the combo box
-	// pre style="font-size: 11px;": ports are already found by using the
-	// searchForPorts
-	// method
-	// post: the connected comm port is stored in commPort, otherwise,
-	// an exception is generated
+	// post: the connected comm port is stored in commPort, otherwise, an exception is generated
 	public void connect(String selectedPort) {
 		selectedPortIdentifier = (CommPortIdentifier) portMap.get(selectedPort);
 
@@ -180,11 +171,9 @@ public class ServeurGants implements SerialPortEventListener {
 		}
 	}
 
-	// starts the event listener that knows whenever data is available to be
-	// read
-	// pre style="font-size: 11px;": an open serial port
-	// post: an event listener for the serial port that knows when data is
-	// received
+	/**
+	 * Initialize the listener that knows when data is available to be read
+	 */
 	public void initListener() {
 		try {
 			serialPort.addEventListener((SerialPortEventListener) this);
@@ -195,9 +184,9 @@ public class ServeurGants implements SerialPortEventListener {
 		}
 	}
 
-	// disconnect the serial port
-	// pre style="font-size: 11px;": an open serial port
-	// post: closed serial port
+	/**
+	 * Disconnect the serial port
+	 */
 	public void disconnect() {
 		// close the serial port
 		try {
@@ -206,7 +195,6 @@ public class ServeurGants implements SerialPortEventListener {
 			serialPort.close();
 			input.close();
 			output.close();
-			bConnected = false;
 
 			logText = "Disconnected.";
 			System.err.println(logText);
@@ -225,34 +213,44 @@ public class ServeurGants implements SerialPortEventListener {
 		}
 	}
 
-	// what happens when data is received
-	// pre : serial event is triggered
-	// post: processing on the data it reads
+	/**
+	 * Event rose when data is received.</br>
+	 * Define data processing
+	 */
 	@Override
 	public void serialEvent(SerialPortEvent evt) {
+		long t1 = System.currentTimeMillis();
 		if (evt.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
 			try {
 				int i = input.read(buffer, 0, buffer.length); 
 
-				for (int j = 0; j < i; j++) {
-					if (buffer[j] == 23) {
-						if (!firstReading) {
+				for (int j = 0; j < i; j++) { // For each char of the buffer
+					if (buffer[j] == ETB) { // If it is an ETB (End of Transmission Block) character
+						if (!firstReading) { // First reading got an very high chance of being incomplete because 
+											 // the gloves are permanently sending the XML over Serial Port
+							// if not the first reading, construct an InputStream from the reconstructed XML
+							// necessary because XML parser can't read a String and Must be used with an Stream
 							parse (new InputSource (new StringReader (sb.toString())));
 						} else {
 							firstReading = false;
 						}
-						sb = new StringBuffer();
+						sb = new StringBuffer(); // clearing of the buffer to prepare the construction of the next XML
 					} else {
-						sb.append((char)buffer[j]);
+						sb.append((char)buffer[j]); // add the current char to the StringBuffer for reconstruction
 					}
 				}
 
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			System.out.println(System.currentTimeMillis() - t1 + "ms");
 		}
 	}
 
+	/**
+	 * Parse the input as an XML document and stock information into the UpsiDextre class tree
+	 * @param input : input source where XML doc can be read
+	 */
 	public void parse (InputSource input) {
 		try {
 			

@@ -36,7 +36,7 @@ public class Server {
 				tmpClientSocket = serverSocket.accept();
 				clients.add(tmpClientSocket);
 				
-				new ClientHandler(tmpClientSocket, hardware);
+				new ClientHandler(tmpClientSocket, hardware).start();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
